@@ -440,10 +440,41 @@
         opacity: 1;
       }
 
+      .modal-image-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-image-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-image-loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
       .modal-image-fullwidth {
         width: 100%;
         height: 100vh;
         object-fit: contain;
+        position: relative;
+        z-index: 2;
+        transition: opacity 0.3s ease;
       }
 
       /* Navigation Areas */
@@ -763,7 +794,12 @@
         Start Again &rarr;
       </div>
 
-      <img id="modalImage" class="modal-image-fullwidth" alt="" />
+      <div class="modal-image-container">
+        <div class="modal-image-loading" id="modalImageLoading">
+          <div class="modal-image-loading-spinner"></div>
+        </div>
+        <img id="modalImage" class="modal-image-fullwidth" alt="" />
+      </div>
 
       <!-- Modal Info Overlay with Toggle -->
       <div class="modal-info-overlay glass-box" id="modalInfoOverlay">
@@ -1119,12 +1155,17 @@
                   description: processDescription(
                     photo.description._content || ""
                   ),
-                  url:
+                  // Use large size for detail view (original if available, else fall back)
+                  urlLarge:
                     photo.url_o ||
                     photo.url_k ||
                     photo.url_h ||
-                    photo.url_l ||
                     `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+                  // Use medium size for grid (faster loading)
+                  urlMedium:
+                    photo.url_l ||
+                    photo.url_c ||
+                    `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
                   thumbnail: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`,
                   dateTaken: photo.datetaken,
                   dateUpload: photo.dateupload,
@@ -1194,7 +1235,7 @@
           item.onclick = () => openModal(i);
 
           const img = document.createElement("img");
-          img.src = photo.url;
+          img.src = photo.urlMedium; // Use medium size for grid
           img.alt = photo.title;
 
           // Prioritize first 4 images (eager loading), lazy load the rest
@@ -1275,6 +1316,16 @@
         const scrollArrow = document.getElementById("scrollToTop");
         const backArrow = document.getElementById("backArrow");
         const topNav = document.getElementById("topNav");
+        const modalImage = document.getElementById("modalImage");
+        const modalImageLoading = document.getElementById("modalImageLoading");
+
+        // Show loading spinner
+        modalImageLoading.style.display = "block";
+        modalImageLoading.style.opacity = "1";
+
+        // Clear previous image
+        modalImage.src = "";
+        modalImage.style.opacity = "0";
 
         // Show back arrow, hide scroll arrow
         scrollArrow.classList.add("hidden");
@@ -1300,7 +1351,19 @@
         currentPhotoIndex = index;
         modal.dataset.currentIndex = index;
 
-        document.getElementById("modalImage").src = photo.url;
+        // Load large image
+        const img = new Image();
+        img.onload = function () {
+          modalImage.src = photo.urlLarge;
+          modalImage.style.opacity = "1";
+          // Hide loading spinner
+          modalImageLoading.style.opacity = "0";
+          setTimeout(() => {
+            modalImageLoading.style.display = "none";
+          }, 300);
+        };
+        img.src = photo.urlLarge;
+
         document.getElementById("modalTitle").textContent = photo.title;
         document.getElementById("modalDescription").textContent =
           photo.description;
