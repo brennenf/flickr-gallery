@@ -353,6 +353,7 @@
         gap: 0;
         min-height: 100vh;
         padding-top: 80px;
+        position: relative;
       }
 
       .photo-grid.hide-for-modal {
@@ -363,6 +364,26 @@
         .photo-grid {
           grid-template-columns: 1fr;
         }
+      }
+
+      /* Grid Loading Animation */
+      .grid-loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .grid-loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
       }
 
       .photo-item {
@@ -717,7 +738,11 @@
     </div>
 
     <!-- Photo Grid -->
-    <div id="photoGrid" class="photo-grid hidden"></div>
+    <div id="photoGrid" class="photo-grid hidden">
+      <div class="grid-loading" id="gridLoading">
+        <div class="grid-loading-spinner"></div>
+      </div>
+    </div>
 
     <!-- Photo Modal -->
     <div id="photoModal" class="photo-modal">
@@ -1158,6 +1183,9 @@
           photos.length
         );
 
+        let loadedImagesCount = 0;
+        const totalImagesToLoad = endIndex - loadedPhotosCount;
+
         for (let i = loadedPhotosCount; i < endIndex; i++) {
           const photo = photos[i];
           const item = document.createElement("div");
@@ -1168,7 +1196,30 @@
           const img = document.createElement("img");
           img.src = photo.url;
           img.alt = photo.title;
-          img.loading = "lazy";
+
+          // Prioritize first 4 images (eager loading), lazy load the rest
+          if (i < 4) {
+            img.loading = "eager";
+          } else {
+            img.loading = "lazy";
+          }
+
+          // Track image loading for first batch
+          if (loadedPhotosCount === 0 && i < 4) {
+            img.onload = () => {
+              loadedImagesCount++;
+              if (loadedImagesCount >= Math.min(4, photos.length)) {
+                // Hide grid loading spinner when first 4 images are loaded
+                const gridLoading = document.getElementById("gridLoading");
+                if (gridLoading) {
+                  gridLoading.style.opacity = "0";
+                  setTimeout(() => {
+                    gridLoading.style.display = "none";
+                  }, 300);
+                }
+              }
+            };
+          }
 
           item.appendChild(img);
           grid.appendChild(item);
