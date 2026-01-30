@@ -75,7 +75,7 @@
         opacity: 0.8;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 950px) {
         .top-nav a.title-link {
           cursor: pointer;
         }
@@ -225,6 +225,13 @@
         padding: 5px 10px;
       }
 
+      @media (max-width: 950px) {
+        .info-modal-close {
+          top: auto;
+          bottom: 15px;
+        }
+      }
+
       .info-modal-close:hover {
         color: #ccc;
       }
@@ -362,7 +369,7 @@
         visibility: hidden;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 950px) {
         .photo-grid {
           grid-template-columns: 1fr;
         }
@@ -516,7 +523,7 @@
         opacity: 1;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 950px) {
         .nav-chevron {
           display: none;
         }
@@ -535,7 +542,7 @@
         transition: opacity 0.3s, visibility 0.3s;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 950px) {
         .modal-info-overlay {
           left: 0;
           right: 0;
@@ -952,6 +959,15 @@
         document.body.style.overflow = "";
       }
 
+      // Format date as m/d/yy
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const month = date.getMonth() + 1; // Months are 0-indexed
+        const day = date.getDate();
+        const year = date.getFullYear().toString().slice(-2); // Last 2 digits of year
+        return `${month}/${day}/${year}`;
+      }
+
       // Shuffle array randomly
       function shuffleArray(array) {
         const shuffled = [...array];
@@ -1094,25 +1110,16 @@
 
         showScreen("loading");
 
-        // Calculate date 2 years ago in Unix timestamp
-        const twoYearsAgo = new Date();
-        twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
-        const minUploadTimestamp = Math.floor(twoYearsAgo.getTime() / 1000);
-
-        console.log("Two years ago timestamp:", minUploadTimestamp);
-        console.log("Two years ago date:", twoYearsAgo.toISOString());
-
         $.ajax({
           url: "https://api.flickr.com/services/rest/",
           data: {
-            method: "flickr.people.getPublicPhotos",
+            method: "flickr.photosets.getPhotos",
             api_key: apiKey,
+            photoset_id: "72177720331760364",
             user_id: userId,
             extras:
               "description,date_taken,date_upload,url_o,url_k,url_h,url_l,count_faves,count_comments",
             format: "json",
-            per_page: 500,
-            min_upload_date: minUploadTimestamp,
           },
           dataType: "jsonp",
           jsonp: "jsoncallback",
@@ -1126,70 +1133,46 @@
               }
 
               if (
-                !data.photos ||
-                !data.photos.photo ||
-                data.photos.photo.length === 0
+                !data.photoset ||
+                !data.photoset.photo ||
+                data.photoset.photo.length === 0
               ) {
-                throw new Error("No photos found for this user");
+                throw new Error("No photos found in this album");
               }
 
-              console.log(
-                "Total photos returned by API:",
-                data.photos.photo.length
-              );
+              console.log("Total photos in album:", data.photoset.photo.length);
 
-              // Map photos and filter by upload date (client-side verification)
-              let allPhotos = data.photos.photo
-                .filter((photo) => {
-                  const uploadTimestamp = parseInt(photo.dateupload);
-                  const isRecent = uploadTimestamp >= minUploadTimestamp;
-                  if (!isRecent) {
-                    console.log(
-                      "Filtered out old photo:",
-                      photo.id,
-                      "Upload date:",
-                      new Date(uploadTimestamp * 1000).toISOString()
-                    );
-                  }
-                  return isRecent;
-                })
-                .map((photo) => ({
-                  id: photo.id,
-                  title: photo.title || "Untitled",
-                  description: processDescription(
-                    photo.description._content || ""
-                  ),
-                  // Use large size for detail view (original if available, else fall back)
-                  urlLarge:
-                    photo.url_o ||
-                    photo.url_k ||
-                    photo.url_h ||
-                    `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
-                  // Use medium size for grid (faster loading)
-                  urlMedium:
-                    photo.url_l ||
-                    photo.url_c ||
-                    `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
-                  thumbnail: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`,
-                  dateTaken: photo.datetaken,
-                  dateUpload: photo.dateupload,
-                  uploadDate: new Date(
-                    parseInt(photo.dateupload) * 1000
-                  ).toISOString(),
-                  owner: photo.owner,
-                  faves: photo.count_faves || 0,
-                  comments: photo.count_comments || 0,
-                  flickrUrl: `https://www.flickr.com/photos/${photo.owner}/${photo.id}/`,
-                }));
+              // Map photos from album
+              let allPhotos = data.photoset.photo.map((photo) => ({
+                id: photo.id,
+                title: photo.title || "Untitled",
+                description: processDescription(
+                  photo.description._content || ""
+                ),
+                // Use large size for detail view (original if available, else fall back)
+                urlLarge:
+                  photo.url_o ||
+                  photo.url_k ||
+                  photo.url_h ||
+                  `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+                // Use medium size for grid (faster loading)
+                urlMedium:
+                  photo.url_l ||
+                  photo.url_c ||
+                  `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
+                thumbnail: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`,
+                dateTaken: photo.datetaken,
+                dateUpload: photo.dateupload,
+                uploadDate: new Date(
+                  parseInt(photo.dateupload) * 1000
+                ).toISOString(),
+                owner: photo.owner,
+                faves: photo.count_faves || 0,
+                comments: photo.count_comments || 0,
+                flickrUrl: `https://www.flickr.com/photos/${photo.owner}/${photo.id}/`,
+              }));
 
-              console.log(
-                "Photos from last 2 years (after filtering):",
-                allPhotos.length
-              );
-
-              if (allPhotos.length === 0) {
-                throw new Error("No photos found from the last 2 years");
-              }
+              console.log("Photos from album:", allPhotos.length);
 
               // Shuffle and limit to 30 photos
               photos = shuffleArray(allPhotos).slice(0, MAX_PHOTOS);
@@ -1346,6 +1329,12 @@
         const modalImage = document.getElementById("modalImage");
         const modalImageLoading = document.getElementById("modalImageLoading");
 
+        // Scroll to top to hide Safari chrome on mobile
+        if (window.innerWidth <= 950) {
+          window.scrollTo(0, 1);
+          setTimeout(() => window.scrollTo(0, 0), 0);
+        }
+
         // Show loading spinner
         modalImageLoading.style.display = "block";
         modalImageLoading.style.opacity = "1";
@@ -1397,6 +1386,10 @@
 
         // Build meta information
         const metaParts = [];
+
+        // Add formatted date
+        metaParts.push(formatDate(photo.dateTaken));
+
         if (photo.faves > 0) {
           metaParts.push(
             `${photo.faves} favorite${photo.faves !== 1 ? "s" : ""}`
