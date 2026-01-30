@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="dns-prefetch" href="https://live.staticflickr.com" />
+    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin />
     <style>
       * {
         margin: 0;
@@ -824,9 +826,11 @@
       let photos = [];
       let currentPhotoIndex = 0;
       let loadedPhotosCount = 0;
+      const INITIAL_BATCH_SIZE = 6;
       const BATCH_SIZE = 20;
       const MAX_PHOTOS = 30;
       let uiVisible = true;
+      let isFirstBatch = true;
 
       // Touch/swipe handling
       let touchStartX = 0;
@@ -1112,7 +1116,7 @@
           },
           dataType: "jsonp",
           jsonp: "jsoncallback",
-          timeout: 10000,
+          timeout: 5000,
           success: function (data) {
             console.log("SUCCESS! Flickr API Response:", data);
 
@@ -1198,6 +1202,9 @@
                   .map((p) => ({ id: p.id, upload: p.uploadDate }))
               );
 
+              // Preload first 4 images
+              preloadFirstImages();
+
               loadMorePhotos();
               showScreen("grid");
               setupInfiniteScroll();
@@ -1216,13 +1223,27 @@
         });
       }
 
+      // Preload first 4 images
+      function preloadFirstImages() {
+        const imagesToPreload = Math.min(4, photos.length);
+        const head = document.head;
+
+        for (let i = 0; i < imagesToPreload; i++) {
+          const link = document.createElement("link");
+          link.rel = "preload";
+          link.as = "image";
+          link.href = photos[i].urlMedium;
+          head.appendChild(link);
+        }
+
+        console.log("Preloading first", imagesToPreload, "images");
+      }
+
       // Load more photos into the grid
       function loadMorePhotos() {
         const grid = document.getElementById("photoGrid");
-        const endIndex = Math.min(
-          loadedPhotosCount + BATCH_SIZE,
-          photos.length
-        );
+        const batchSize = isFirstBatch ? INITIAL_BATCH_SIZE : BATCH_SIZE;
+        const endIndex = Math.min(loadedPhotosCount + batchSize, photos.length);
 
         let loadedImagesCount = 0;
         const totalImagesToLoad = endIndex - loadedPhotosCount;
@@ -1267,6 +1288,12 @@
         }
 
         loadedPhotosCount = endIndex;
+
+        // After first batch, switch to regular batch size
+        if (isFirstBatch) {
+          isFirstBatch = false;
+        }
+
         console.log("Loaded photos:", loadedPhotosCount, "of", photos.length);
       }
 
