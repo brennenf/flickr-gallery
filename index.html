@@ -574,7 +574,7 @@
 
       .modal-info-overlay h2 {
         font-size: 1.75rem;
-        margin: 0 0 10px 0;
+        margin: 0 0 15px 0;
         color: #fff;
         font-weight: 400;
       }
@@ -586,6 +586,7 @@
         line-height: 1.5;
         font-weight: 400;
         white-space: pre-line;
+        text-align: left;
       }
 
       .modal-info-overlay .meta {
@@ -593,29 +594,27 @@
         margin-top: 10px;
         color: #ccc;
         font-weight: 400;
+        text-align: left;
+      }
+
+      .modal-info-overlay .meta:hover {
+        text-decoration: underline;
       }
 
       /* UI Toggle Button */
       .ui-toggle {
         position: absolute;
-        top: 0;
-        right: 35px;
-        padding: 15px 0 0 0;
+        top: 20px;
+        right: 20px;
         cursor: pointer;
-        color: #fff;
         user-select: none;
         line-height: 1;
         transition: opacity 0.2s;
-        font-size: 2rem;
         z-index: 10;
       }
 
       .ui-toggle:hover {
         opacity: 0.7;
-      }
-
-      .ui-toggle.down {
-        transform: rotate(-90deg);
       }
 
       /* Show UI Button */
@@ -781,11 +780,28 @@
 
       <!-- Modal Info Overlay with Toggle -->
       <div class="modal-info-overlay glass-box" id="modalInfoOverlay">
-        <div class="ui-toggle down" onclick="toggleUI()">‹</div>
+        <div class="ui-toggle" onclick="toggleUI()">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 50 50"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="25" cy="25" r="25" fill="#000" opacity="0.4" />
+            <path
+              d="M20 23 L25 28 L30 23"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
         <div class="modal-info-content">
+          <h2 id="modalTitle"></h2>
+          <div id="modalDescription" class="description"></div>
           <a id="modalLink" href="#" target="_blank">
-            <h2 id="modalTitle"></h2>
-            <div id="modalDescription" class="description"></div>
             <div id="modalMeta" class="meta"></div>
           </a>
         </div>
@@ -800,9 +816,9 @@
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="25" cy="25" r="25" fill="#000" />
+          <circle cx="25" cy="25" r="25" fill="#000" opacity="0.4" />
           <path
-            d="M15 28 L25 18 L35 28"
+            d="M20 27 L25 22 L30 27"
             stroke="#fff"
             stroke-width="2"
             stroke-linecap="round"
@@ -1158,10 +1174,22 @@
 
               console.log("Photos from album:", allPhotos.length);
 
-              // Shuffle and limit to 30 photos
-              photos = shuffleArray(allPhotos).slice(0, MAX_PHOTOS);
+              // Check if there's a photo parameter in the URL
+              const urlParams = new URLSearchParams(window.location.search);
+              const photoIdParam = urlParams.get("photo");
 
-              console.log("Selected random photos:", photos.length);
+              // Only shuffle if not loading a specific photo
+              if (!photoIdParam) {
+                photos = shuffleArray(allPhotos).slice(0, MAX_PHOTOS);
+                console.log("Shuffled photos:", photos.length);
+              } else {
+                photos = allPhotos.slice(0, MAX_PHOTOS);
+                console.log(
+                  "Loading specific photo, no shuffle:",
+                  photos.length
+                );
+              }
+
               console.log(
                 "Sample photo upload dates:",
                 photos
