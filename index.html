@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>problem solved by brennenf</title>
+    <title>Flickr Photo Viewer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -623,16 +623,12 @@
         position: fixed;
         bottom: 20px;
         left: 50%;
-        transform: translateX(-50%) rotate(90deg);
-        padding: 20px;
+        transform: translateX(-50%);
         z-index: 1020;
         cursor: pointer;
-        color: #fff;
-        user-select: none;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
-        font-size: 2rem;
       }
 
       .show-ui-btn.visible {
@@ -641,25 +637,7 @@
       }
 
       .show-ui-btn:hover {
-        opacity: 0.7;
-      }
-
-      /* Start Again Box */
-      .start-again-box {
-        position: fixed;
-        bottom: 50%;
-        left: 50%;
-        transform: translate(-50%, 50%);
-        padding: 30px 50px;
-        text-align: center;
-        z-index: 1020;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: opacity 0.2s;
-      }
-
-      .start-again-box:hover {
-        opacity: 0.9;
+        opacity: 0.8;
       }
 
       .hidden {
@@ -794,15 +772,6 @@
         <div class="nav-chevron glass-box">›</div>
       </div>
 
-      <!-- Start Again Box -->
-      <div
-        id="startAgainBox"
-        class="start-again-box glass-box hidden"
-        onclick="startAgain()"
-      >
-        Start Again &rarr;
-      </div>
-
       <div class="modal-image-container">
         <div class="modal-image-loading" id="modalImageLoading">
           <div class="modal-image-loading-spinner"></div>
@@ -823,8 +792,23 @@
       </div>
 
       <!-- Show UI Button -->
-      <div class="show-ui-btn glass-box" id="showUIBtn" onclick="toggleUI()">
-        ‹
+      <div class="show-ui-btn" id="showUIBtn" onclick="toggleUI()">
+        <svg
+          width="50"
+          height="50"
+          viewBox="0 0 50 50"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="25" cy="25" r="25" fill="#000" />
+          <path
+            d="M15 28 L25 18 L35 28"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </div>
     </div>
 
@@ -1426,18 +1410,9 @@
 
       // Update navigation based on current position
       function updateNavigation() {
-        const isFirst = currentPhotoIndex === 0;
-        const isLast = currentPhotoIndex === photos.length - 1;
-
-        document.getElementById("navLeft").style.display = isFirst
-          ? "none"
-          : "flex";
-        document.getElementById("navRight").style.display = isLast
-          ? "none"
-          : "flex";
-        document
-          .getElementById("startAgainBox")
-          .classList.toggle("hidden", !isLast);
+        // Always show both navigation arrows (they loop)
+        document.getElementById("navLeft").style.display = "flex";
+        document.getElementById("navRight").style.display = "flex";
       }
 
       // Close photo modal
@@ -1484,35 +1459,26 @@
 
       // Navigate to next photo
       function nextPhoto() {
-        if (currentPhotoIndex < photos.length - 1) {
-          const modal = document.getElementById("photoModal");
-          modal.classList.remove("fade-in");
-
-          setTimeout(() => {
-            openModal(currentPhotoIndex + 1);
-          }, 100);
-        }
-      }
-
-      // Navigate to previous photo
-      function prevPhoto() {
-        if (currentPhotoIndex > 0) {
-          const modal = document.getElementById("photoModal");
-          modal.classList.remove("fade-in");
-
-          setTimeout(() => {
-            openModal(currentPhotoIndex - 1);
-          }, 100);
-        }
-      }
-
-      // Start again from the beginning
-      function startAgain() {
         const modal = document.getElementById("photoModal");
         modal.classList.remove("fade-in");
 
         setTimeout(() => {
-          openModal(0);
+          // Loop back to first photo if at the end
+          const nextIndex = (currentPhotoIndex + 1) % photos.length;
+          openModal(nextIndex);
+        }, 100);
+      }
+
+      // Navigate to previous photo
+      function prevPhoto() {
+        const modal = document.getElementById("photoModal");
+        modal.classList.remove("fade-in");
+
+        setTimeout(() => {
+          // Loop back to last photo if at the beginning
+          const prevIndex =
+            currentPhotoIndex === 0 ? photos.length - 1 : currentPhotoIndex - 1;
+          openModal(prevIndex);
         }, 100);
       }
 
