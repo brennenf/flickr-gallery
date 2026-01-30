@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flickr Photo Viewer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="dns-prefetch" href="https://live.staticflickr.com" />
-    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      body {
-        font-family: "Roboto", sans-serif;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flickr Photo Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://live.staticflickr.com">
+    <link rel="preconnect" href="https://live.staticflickr.com" crossorigin>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Roboto', sans-serif;
         font-weight: 400;
         background: #000;
         color: #fff;
         overflow-x: hidden;
-      }
+    }
 
-      /* Glass Box Style */
-      .glass-box {
+    /* Glass Box Style */
+    .glass-box {
         background: rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-      }
+    }
 
-      /* Top Navigation Bar */
-      .top-nav {
+    /* Top Navigation Bar */
+    .top-nav {
         position: fixed;
         top: 0;
         left: 0;
@@ -48,14 +47,14 @@
         justify-content: center;
         gap: 20px;
         transition: opacity 0.3s, visibility 0.3s;
-      }
+    }
 
-      .top-nav.hide-ui {
+    .top-nav.hide-ui {
         opacity: 0;
         visibility: hidden;
-      }
+    }
 
-      .top-nav h1 {
+    .top-nav h1 {
         font-size: 2em;
         font-weight: 700;
         font-style: italic;
@@ -63,29 +62,29 @@
         margin: 0;
         transition: font-size 0.2s ease;
         line-height: 1;
-      }
+    }
 
-      .top-nav a.title-link {
+    .top-nav a.title-link {
         color: #fff;
         text-decoration: none;
         line-height: 1;
-      }
+    }
 
-      .top-nav a.title-link:hover {
+    .top-nav a.title-link:hover {
         opacity: 0.8;
-      }
+    }
 
-      @media (max-width: 768px) {
+    @media (max-width: 950px) {
         .top-nav a.title-link {
-          cursor: pointer;
+            cursor: pointer;
         }
-      }
+    }
 
-      .top-nav.detail-view h1 {
+    .top-nav.detail-view h1 {
         font-size: 1.3em;
-      }
+    }
 
-      .scroll-to-top {
+    .scroll-to-top {
         position: absolute;
         left: 40px;
         opacity: 0;
@@ -98,21 +97,21 @@
         line-height: 1;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .scroll-to-top.visible {
+    .scroll-to-top.visible {
         opacity: 0.5;
-      }
+    }
 
-      .scroll-to-top.visible:hover {
+    .scroll-to-top.visible:hover {
         opacity: 1;
-      }
+    }
 
-      .scroll-to-top.hide-for-modal {
+    .scroll-to-top.hide-for-modal {
         visibility: hidden;
-      }
+    }
 
-      .add-info-btn {
+    .add-info-btn {
         position: absolute;
         right: 40px;
         opacity: 0.5;
@@ -125,14 +124,14 @@
         line-height: 1;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .add-info-btn:hover {
+    .add-info-btn:hover {
         opacity: 1;
-      }
+    }
 
-      /* Back Arrow (for detail view) */
-      .back-arrow {
+    /* Back Arrow (for detail view) */
+    .back-arrow {
         position: absolute;
         left: 40px;
         opacity: 1;
@@ -144,14 +143,14 @@
         line-height: 1;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .back-arrow:hover {
+    .back-arrow:hover {
         color: #ccc;
-      }
+    }
 
-      /* Info Modal */
-      .info-modal {
+    /* Info Modal */
+    .info-modal {
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.7);
@@ -160,13 +159,13 @@
         align-items: center;
         justify-content: center;
         padding: 20px;
-      }
+    }
 
-      .info-modal.active {
+    .info-modal.active {
         display: flex;
-      }
+    }
 
-      .info-modal-content {
+    .info-modal-content {
         position: relative;
         width: 100%;
         max-width: 600px;
@@ -174,47 +173,47 @@
         padding: 45px;
         border: 1px solid white;
         overflow-y: auto;
-      }
+    }
 
-      .info-modal-content h2 {
+    .info-modal-content h2 {
         font-size: 1.5em;
         font-weight: 400;
         margin-bottom: 10px;
-      }
+    }
 
-      .info-modal-content p,
-      .info-modal-content ul {
+    .info-modal-content p,
+    .info-modal-content ul {
         font-size: 1em;
         line-height: 1.5em;
         margin: 10px 0px;
-      }
+    }
 
-      .info-modal-content li {
+    .info-modal-content li {
         font-size: 1em;
         line-height: 1.5em;
-      }
+    }
 
-      .info-modal-content ul {
+    .info-modal-content ul {
         margin-left: 10px;
-      }
+    }
 
-      .info-modal-content a {
+    .info-modal-content a {
         color: #fff;
         font-weight: 700;
         text-decoration: underline;
-      }
+    }
 
-      .info-modal-content a:hover {
+    .info-modal-content a:hover {
         text-decoration: none;
-      }
+    }
 
-      .info-modal-text {
-        font-family: "Roboto", sans-serif;
+    .info-modal-text {
+        font-family: 'Roboto', sans-serif;
         font-weight: 300;
         color: #fff;
-      }
+    }
 
-      .info-modal-close {
+    .info-modal-close {
         position: absolute;
         top: 15px;
         right: 15px;
@@ -223,48 +222,55 @@
         cursor: pointer;
         user-select: none;
         padding: 5px 10px;
-      }
+    }
 
-      .info-modal-close:hover {
+    @media (max-width: 950px) {
+        .info-modal-close {
+            top: auto;
+            bottom: 15px;
+        }
+    }
+
+    .info-modal-close:hover {
         color: #ccc;
-      }
+    }
 
-      /* Configuration Screen */
-      .config-screen {
+    /* Configuration Screen */
+    .config-screen {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 2rem;
-      }
+    }
 
-      .config-form {
+    .config-form {
         background: #1a1a1a;
         border-radius: 12px;
         padding: 3rem;
         max-width: 500px;
         width: 100%;
-      }
+    }
 
-      .config-form h1 {
+    .config-form h1 {
         font-size: 2rem;
         font-weight: 400;
         margin-bottom: 2rem;
-      }
+    }
 
-      .form-group {
+    .form-group {
         margin-bottom: 1.5rem;
-      }
+    }
 
-      .form-group label {
+    .form-group label {
         display: block;
         color: #ccc;
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
         font-weight: 400;
-      }
+    }
 
-      .form-group input {
+    .form-group input {
         width: 100%;
         padding: 0.75rem;
         background: #2a2a2a;
@@ -272,16 +278,16 @@
         border-radius: 6px;
         color: #fff;
         font-size: 1rem;
-        font-family: "Roboto", sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: 400;
-      }
+    }
 
-      .form-group input:focus {
+    .form-group input:focus {
         outline: none;
         border-color: #3b82f6;
-      }
+    }
 
-      .btn {
+    .btn {
         width: 100%;
         padding: 0.75rem;
         background: #3b82f6;
@@ -290,16 +296,16 @@
         border-radius: 6px;
         font-size: 1rem;
         font-weight: 400;
-        font-family: "Roboto", sans-serif;
+        font-family: 'Roboto', sans-serif;
         cursor: pointer;
         transition: background 0.2s;
-      }
+    }
 
-      .btn:hover {
+    .btn:hover {
         background: #2563eb;
-      }
+    }
 
-      .help-text {
+    .help-text {
         margin-top: 2rem;
         padding-top: 2rem;
         border-top: 1px solid #333;
@@ -307,38 +313,36 @@
         color: #888;
         line-height: 1.6;
         font-weight: 400;
-      }
+    }
 
-      .help-text a {
+    .help-text a {
         color: #3b82f6;
         text-decoration: none;
-      }
+    }
 
-      /* Loading Animation */
-      .loading {
+    /* Loading Animation */
+    .loading {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-      }
+    }
 
-      .spinner {
+    .spinner {
         width: 50px;
         height: 50px;
         border: 4px solid rgba(255, 255, 255, 0.1);
         border-top-color: #fff;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-      }
+    }
 
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 
-      /* Error State */
-      .error {
+    /* Error State */
+    .error {
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -346,30 +350,30 @@
         flex-direction: column;
         gap: 1rem;
         color: #ef4444;
-      }
+    }
 
-      /* Photo Grid */
-      .photo-grid {
+    /* Photo Grid */
+    .photo-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0;
         min-height: 100vh;
         padding-top: 80px;
         position: relative;
-      }
+    }
 
-      .photo-grid.hide-for-modal {
+    .photo-grid.hide-for-modal {
         visibility: hidden;
-      }
+    }
 
-      @media (max-width: 768px) {
+    @media (max-width: 950px) {
         .photo-grid {
-          grid-template-columns: 1fr;
+            grid-template-columns: 1fr;
         }
-      }
+    }
 
-      /* Grid Loading Animation */
-      .grid-loading {
+    /* Grid Loading Animation */
+    .grid-loading {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -377,50 +381,50 @@
         z-index: 1;
         pointer-events: none;
         transition: opacity 0.3s ease;
-      }
+    }
 
-      .grid-loading-spinner {
+    .grid-loading-spinner {
         width: 60px;
         height: 60px;
         border: 3px solid rgba(255, 255, 255, 0.1);
         border-top-color: #fff;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-      }
+    }
 
-      .photo-item {
+    .photo-item {
         position: relative;
         aspect-ratio: 1;
         overflow: hidden;
         cursor: pointer;
-      }
+    }
 
-      .photo-item img {
+    .photo-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
-      }
+    }
 
-      .photo-item:hover img {
+    .photo-item:hover img {
         transform: scale(1.05);
-      }
+    }
 
-      .photo-item::after {
-        content: "";
+    .photo-item::after {
+        content: '';
         position: absolute;
         inset: 0;
         background: rgba(0, 0, 0, 0);
         transition: background 0.3s ease;
         pointer-events: none;
-      }
+    }
 
-      .photo-item:hover::after {
+    .photo-item:hover::after {
         background: rgba(0, 0, 0, 0.3);
-      }
+    }
 
-      /* Single Photo View */
-      .photo-modal {
+    /* Single Photo View */
+    .photo-modal {
         position: fixed;
         inset: 0;
         background: #000;
@@ -431,27 +435,27 @@
         padding: 0;
         opacity: 0;
         transition: opacity 0.1s ease;
-      }
+    }
 
-      .photo-modal.active {
+    .photo-modal.active {
         display: flex;
         flex-direction: column;
-      }
+    }
 
-      .photo-modal.fade-in {
+    .photo-modal.fade-in {
         opacity: 1;
-      }
+    }
 
-      .modal-image-container {
+    .modal-image-container {
         position: relative;
         width: 100%;
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-      }
+    }
 
-      .modal-image-loading {
+    .modal-image-loading {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -459,28 +463,28 @@
         z-index: 1;
         pointer-events: none;
         transition: opacity 0.3s ease;
-      }
+    }
 
-      .modal-image-loading-spinner {
+    .modal-image-loading-spinner {
         width: 60px;
         height: 60px;
         border: 3px solid rgba(255, 255, 255, 0.1);
         border-top-color: #fff;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-      }
+    }
 
-      .modal-image-fullwidth {
+    .modal-image-fullwidth {
         width: 100%;
         height: 100vh;
         object-fit: contain;
         position: relative;
         z-index: 2;
         transition: opacity 0.3s ease;
-      }
+    }
 
-      /* Navigation Areas */
-      .nav-area {
+    /* Navigation Areas */
+    .nav-area {
         position: fixed;
         top: 0;
         bottom: 0;
@@ -489,41 +493,41 @@
         cursor: pointer;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .nav-area-left {
+    .nav-area-left {
         left: 0;
         justify-content: flex-start;
         padding-left: 2rem;
-      }
+    }
 
-      .nav-area-right {
+    .nav-area-right {
         right: 0;
         justify-content: flex-end;
         padding-right: 2rem;
-      }
+    }
 
-      .nav-chevron {
+    .nav-chevron {
         padding: 20px;
         font-size: 2rem;
         color: #fff;
         opacity: 0;
         transition: opacity 0.2s;
         pointer-events: none;
-      }
+    }
 
-      .nav-area:hover .nav-chevron {
+    .nav-area:hover .nav-chevron {
         opacity: 1;
-      }
+    }
 
-      @media (max-width: 768px) {
+    @media (max-width: 950px) {
         .nav-chevron {
-          display: none;
+            display: none;
         }
-      }
+    }
 
-      /* Modal Info Overlay */
-      .modal-info-overlay {
+    /* Modal Info Overlay */
+    .modal-info-overlay {
         position: fixed;
         bottom: 0;
         left: 50%;
@@ -533,63 +537,63 @@
         text-align: center;
         z-index: 1020;
         transition: opacity 0.3s, visibility 0.3s;
-      }
+    }
 
-      @media (max-width: 768px) {
+    @media (max-width: 950px) {
         .modal-info-overlay {
-          left: 0;
-          right: 0;
-          transform: none;
-          max-width: 100%;
-          width: 100%;
-          padding: 20px 50px;
+            left: 0;
+            right: 0;
+            transform: none;
+            max-width: 100%;
+            width: 100%;
+            padding: 20px 50px;
         }
-      }
+    }
 
-      .modal-info-overlay.hide-ui {
+    .modal-info-overlay.hide-ui {
         opacity: 0;
         visibility: hidden;
-      }
+    }
 
-      .modal-info-content {
+    .modal-info-content {
         position: relative;
-      }
+    }
 
-      .modal-info-overlay a {
+    .modal-info-overlay a {
         color: #fff;
         text-decoration: none;
         display: block;
-      }
+    }
 
-      .modal-info-overlay a:hover {
+    .modal-info-overlay a:hover {
         opacity: 0.9;
-      }
+    }
 
-      .modal-info-overlay h2 {
+    .modal-info-overlay h2 {
         font-size: 1.75rem;
         margin: 0 0 10px 0;
         color: #fff;
         font-weight: 400;
-      }
+    }
 
-      .modal-info-overlay .description {
+    .modal-info-overlay .description {
         font-size: 0.95rem;
         margin: 10px 0;
         color: #fff;
         line-height: 1.5;
         font-weight: 400;
         white-space: pre-line;
-      }
+    }
 
-      .modal-info-overlay .meta {
+    .modal-info-overlay .meta {
         font-size: 0.75rem;
         margin-top: 10px;
         color: #ccc;
         font-weight: 400;
-      }
+    }
 
-      /* UI Toggle Button */
-      .ui-toggle {
+    /* UI Toggle Button */
+    .ui-toggle {
         position: absolute;
         top: 0;
         right: 35px;
@@ -601,18 +605,18 @@
         transition: opacity 0.2s;
         font-size: 2rem;
         z-index: 10;
-      }
+    }
 
-      .ui-toggle:hover {
+    .ui-toggle:hover {
         opacity: 0.7;
-      }
+    }
 
-      .ui-toggle.down {
+    .ui-toggle.down {
         transform: rotate(-90deg);
-      }
+    }
 
-      /* Show UI Button */
-      .show-ui-btn {
+    /* Show UI Button */
+    .show-ui-btn {
         position: fixed;
         bottom: 20px;
         left: 50%;
@@ -626,19 +630,19 @@
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
         font-size: 2rem;
-      }
+    }
 
-      .show-ui-btn.visible {
+    .show-ui-btn.visible {
         opacity: 1;
         visibility: visible;
-      }
+    }
 
-      .show-ui-btn:hover {
+    .show-ui-btn:hover {
         opacity: 0.7;
-      }
+    }
 
-      /* Start Again Box */
-      .start-again-box {
+    /* Start Again Box */
+    .start-again-box {
         position: fixed;
         bottom: 50%;
         left: 50%;
@@ -649,214 +653,165 @@
         font-size: 1.5rem;
         cursor: pointer;
         transition: opacity 0.2s;
-      }
+    }
 
-      .start-again-box:hover {
+    .start-again-box:hover {
         opacity: 0.9;
-      }
+    }
 
-      .hidden {
+    .hidden {
         display: none !important;
-      }
-    </style>
-  </head>
-  <body>
+    }
+</style>
+```
+
+</head>
+<body>
     <!-- Top Navigation -->
     <div class="top-nav glass-box" id="topNav">
-      <a
-        href="#"
-        class="scroll-to-top"
-        id="scrollToTop"
-        onclick="scrollToTop(event)"
-        >↑</a
-      >
-      <a
-        href="#"
-        class="back-arrow hidden"
-        id="backArrow"
-        onclick="closeModal(event)"
-        >←</a
-      >
-      <a href="/" class="title-link" id="titleLink">
-        <h1>problem solved</h1>
-      </a>
-      <a
-        href="#"
-        class="add-info-btn"
-        id="addInfoBtn"
-        onclick="openInfoModal(event)"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-          ></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-          <line x1="10" y1="9" x2="8" y2="9"></line>
-        </svg>
-      </a>
+        <a href="#" class="scroll-to-top" id="scrollToTop" onclick="scrollToTop(event)">↑</a>
+        <a href="#" class="back-arrow hidden" id="backArrow" onclick="closeModal(event)">←</a>
+        <a href="/" class="title-link" id="titleLink">
+            <h1>problem solved</h1>
+        </a>
+        <a href="#" class="add-info-btn" id="addInfoBtn" onclick="openInfoModal(event)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <line x1="10" y1="9" x2="8" y2="9"></line>
+            </svg>
+        </a>
     </div>
 
-    <!-- Info Modal -->
-    <div id="infoModal" class="info-modal">
-      <div class="info-modal-content glass-box">
+```
+<!-- Info Modal -->
+<div id="infoModal" class="info-modal">
+    <div class="info-modal-content glass-box">
         <div class="info-modal-close" onclick="closeInfoModal()">×</div>
         <div class="info-modal-text" id="infoModalText">
-          sample text goes here
+            sample text goes here
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Configuration Screen -->
-    <div id="configScreen" class="config-screen hidden">
-      <div class="config-form">
+<!-- Configuration Screen -->
+<div id="configScreen" class="config-screen hidden">
+    <div class="config-form">
         <h1>Flickr Photo Viewer</h1>
         <form id="configForm">
-          <div class="form-group">
-            <label for="apiKey">Flickr API Key</label>
-            <input
-              type="text"
-              id="apiKey"
-              required
-              value="c650b692e9b43bf842143814967928f0"
-            />
-          </div>
-          <div class="form-group">
-            <label for="userId">Flickr User ID</label>
-            <input type="text" id="userId" required value="197005974@N03" />
-          </div>
-          <button type="submit" class="btn">Load Photos</button>
+            <div class="form-group">
+                <label for="apiKey">Flickr API Key</label>
+                <input type="text" id="apiKey" required value="c650b692e9b43bf842143814967928f0">
+            </div>
+            <div class="form-group">
+                <label for="userId">Flickr User ID</label>
+                <input type="text" id="userId" required value="197005974@N03">
+            </div>
+            <button type="submit" class="btn">Load Photos</button>
         </form>
         <div class="help-text">
-          <p>
-            • Get an API key at:
-            <a
-              href="https://www.flickr.com/services/apps/create"
-              target="_blank"
-              >flickr.com/services/apps/create</a
-            >
-          </p>
-          <p>• Your User ID: 197005974@N03</p>
-          <p>• Run this from a local server (see instructions below)</p>
+            <p>• Get an API key at: <a href="https://www.flickr.com/services/apps/create" target="_blank">flickr.com/services/apps/create</a></p>
+            <p>• Your User ID: 197005974@N03</p>
+            <p>• Run this from a local server (see instructions below)</p>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Loading State -->
-    <div id="loadingScreen" class="loading">
-      <div class="spinner"></div>
-    </div>
+<!-- Loading State -->
+<div id="loadingScreen" class="loading">
+    <div class="spinner"></div>
+</div>
 
-    <!-- Error State -->
-    <div id="errorScreen" class="error hidden">
-      <div style="font-size: 1.25rem">Error loading photos</div>
-      <div id="errorMessage"></div>
-      <button
-        class="btn"
-        style="max-width: 200px; margin-top: 1rem"
-        onclick="location.reload()"
-      >
-        Try Again
-      </button>
-    </div>
+<!-- Error State -->
+<div id="errorScreen" class="error hidden">
+    <div style="font-size: 1.25rem;">Error loading photos</div>
+    <div id="errorMessage"></div>
+    <button class="btn" style="max-width: 200px; margin-top: 1rem;" onclick="location.reload()">Try Again</button>
+</div>
 
-    <!-- Photo Grid -->
-    <div id="photoGrid" class="photo-grid hidden">
-      <div class="grid-loading" id="gridLoading">
+<!-- Photo Grid -->
+<div id="photoGrid" class="photo-grid hidden">
+    <div class="grid-loading" id="gridLoading">
         <div class="grid-loading-spinner"></div>
-      </div>
+    </div>
+</div>
+
+<!-- Photo Modal -->
+<div id="photoModal" class="photo-modal">
+    <!-- Navigation Areas -->
+    <div class="nav-area nav-area-left" id="navLeft" onclick="prevPhoto()">
+        <div class="nav-chevron glass-box">‹</div>
+    </div>
+    <div class="nav-area nav-area-right" id="navRight" onclick="nextPhoto()">
+        <div class="nav-chevron glass-box">›</div>
     </div>
 
-    <!-- Photo Modal -->
-    <div id="photoModal" class="photo-modal">
-      <!-- Navigation Areas -->
-      <div class="nav-area nav-area-left" id="navLeft" onclick="prevPhoto()">
-        <div class="nav-chevron glass-box">‹</div>
-      </div>
-      <div class="nav-area nav-area-right" id="navRight" onclick="nextPhoto()">
-        <div class="nav-chevron glass-box">›</div>
-      </div>
-
-      <!-- Start Again Box -->
-      <div
-        id="startAgainBox"
-        class="start-again-box glass-box hidden"
-        onclick="startAgain()"
-      >
+    <!-- Start Again Box -->
+    <div id="startAgainBox" class="start-again-box glass-box hidden" onclick="startAgain()">
         Start Again &rarr;
-      </div>
+    </div>
 
-      <div class="modal-image-container">
+    <div class="modal-image-container">
         <div class="modal-image-loading" id="modalImageLoading">
-          <div class="modal-image-loading-spinner"></div>
+            <div class="modal-image-loading-spinner"></div>
         </div>
-        <img id="modalImage" class="modal-image-fullwidth" alt="" />
-      </div>
-
-      <!-- Modal Info Overlay with Toggle -->
-      <div class="modal-info-overlay glass-box" id="modalInfoOverlay">
+        <img id="modalImage" class="modal-image-fullwidth" alt="">
+    </div>
+    
+    <!-- Modal Info Overlay with Toggle -->
+    <div class="modal-info-overlay glass-box" id="modalInfoOverlay">
         <div class="ui-toggle down" onclick="toggleUI()">‹</div>
         <div class="modal-info-content">
-          <a id="modalLink" href="#" target="_blank">
-            <h2 id="modalTitle"></h2>
-            <div id="modalDescription" class="description"></div>
-            <div id="modalMeta" class="meta"></div>
-          </a>
+            <a id="modalLink" href="#" target="_blank">
+                <h2 id="modalTitle"></h2>
+                <div id="modalDescription" class="description"></div>
+                <div id="modalMeta" class="meta"></div>
+            </a>
         </div>
-      </div>
-
-      <!-- Show UI Button -->
-      <div class="show-ui-btn glass-box" id="showUIBtn" onclick="toggleUI()">
-        ‹
-      </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      let photos = [];
-      let currentPhotoIndex = 0;
-      let loadedPhotosCount = 0;
-      const INITIAL_BATCH_SIZE = 6;
-      const BATCH_SIZE = 20;
-      const MAX_PHOTOS = 30;
-      let uiVisible = true;
-      let isFirstBatch = true;
+    <!-- Show UI Button -->
+    <div class="show-ui-btn glass-box" id="showUIBtn" onclick="toggleUI()">‹</div>
+</div>
 
-      // Touch/swipe handling
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let touchEndX = 0;
-      let touchEndY = 0;
-      const minSwipeDistance = 50;
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let photos = [];
+    let currentPhotoIndex = 0;
+    let loadedPhotosCount = 0;
+    const INITIAL_BATCH_SIZE = 6;
+    const BATCH_SIZE = 20;
+    const MAX_PHOTOS = 30;
+    let uiVisible = true;
+    let isFirstBatch = true;
 
-      // Handle touch start
-      function handleTouchStart(e) {
+    // Touch/swipe handling
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    const minSwipeDistance = 50;
+
+    // Handle touch start
+    function handleTouchStart(e) {
         touchStartX = e.changedTouches[0].screenX;
         touchStartY = e.changedTouches[0].screenY;
-      }
+    }
 
-      // Handle touch end
-      function handleTouchEnd(e) {
+    // Handle touch end
+    function handleTouchEnd(e) {
         touchEndX = e.changedTouches[0].screenX;
         touchEndY = e.changedTouches[0].screenY;
         handleSwipe();
-      }
+    }
 
-      // Determine swipe direction and execute action
-      function handleSwipe() {
-        const modal = document.getElementById("photoModal");
-        const isModalOpen = modal.classList.contains("active");
-
+    // Determine swipe direction and execute action
+    function handleSwipe() {
+        const modal = document.getElementById('photoModal');
+        const isModalOpen = modal.classList.contains('active');
+        
         if (!isModalOpen) return;
 
         const deltaX = touchEndX - touchStartX;
@@ -866,716 +821,682 @@
 
         // Horizontal swipe (left/right for prev/next photo)
         if (absDeltaX > absDeltaY && absDeltaX > minSwipeDistance) {
-          if (deltaX > 0) {
-            // Swipe right - previous photo
-            prevPhoto();
-          } else {
-            // Swipe left - next photo
-            nextPhoto();
-          }
+            if (deltaX > 0) {
+                // Swipe right - previous photo
+                prevPhoto();
+            } else {
+                // Swipe left - next photo
+                nextPhoto();
+            }
         }
         // Vertical swipe (up/down for show/hide UI)
         else if (absDeltaY > absDeltaX && absDeltaY > minSwipeDistance) {
-          if (deltaY > 0) {
-            // Swipe down - hide UI
-            hideUI();
-          } else {
-            // Swipe up - show UI
-            showUI();
-          }
-        }
-      }
-
-      // Load about.txt file
-      function loadAboutText() {
-        fetch("about.txt")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("about.txt not found");
+            if (deltaY > 0) {
+                // Swipe down - hide UI
+                hideUI();
+            } else {
+                // Swipe up - show UI
+                showUI();
             }
-            return response.text();
-          })
-          .then((text) => {
-            document.getElementById("infoModalText").innerHTML = text;
-          })
-          .catch((error) => {
-            console.log("Could not load about.txt:", error);
-            // Keep default text if file not found
-          });
-      }
+        }
+    }
 
-      // Add touch event listeners to photo modal
-      window.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("photoModal");
-        modal.addEventListener("touchstart", handleTouchStart, false);
-        modal.addEventListener("touchend", handleTouchEnd, false);
+    // Load about.txt file
+    function loadAboutText() {
+        fetch('about.txt')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('about.txt not found');
+                }
+                return response.text();
+            })
+            .then(text => {
+                document.getElementById('infoModalText').innerHTML = text;
+            })
+            .catch(error => {
+                console.log('Could not load about.txt:', error);
+                // Keep default text if file not found
+            });
+    }
 
+    // Add touch event listeners to photo modal
+    window.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('photoModal');
+        modal.addEventListener('touchstart', handleTouchStart, false);
+        modal.addEventListener('touchend', handleTouchEnd, false);
+        
         // Load about.txt
         loadAboutText();
-
+        
         // Handle title link click on mobile
-        const titleLink = document.getElementById("titleLink");
-        titleLink.addEventListener("click", function (e) {
-          const isModalOpen = document
-            .getElementById("photoModal")
-            .classList.contains("active");
-
-          if (isModalOpen) {
-            // In detail view, close modal and return to index
-            e.preventDefault();
-            closeModal();
-          } else {
-            // On index view, prevent default and do nothing
-            e.preventDefault();
-          }
+        const titleLink = document.getElementById('titleLink');
+        titleLink.addEventListener('click', function(e) {
+            const isModalOpen = document.getElementById('photoModal').classList.contains('active');
+            
+            if (isModalOpen) {
+                // In detail view, close modal and return to index
+                e.preventDefault();
+                closeModal();
+            } else {
+                // On index view, prevent default and do nothing
+                e.preventDefault();
+            }
         });
-
+        
         // Auto-load photos on page load
-        const apiKey = document.getElementById("apiKey").value;
-        const userId = document.getElementById("userId").value;
-
+        const apiKey = document.getElementById('apiKey').value;
+        const userId = document.getElementById('userId').value;
+        
         if (apiKey && userId) {
-          fetchPhotos(apiKey, userId);
+            fetchPhotos(apiKey, userId);
         }
-      });
+    });
 
-      // Open info modal
-      function openInfoModal(event) {
+    // Open info modal
+    function openInfoModal(event) {
         event.preventDefault();
-        document.getElementById("infoModal").classList.add("active");
-        document.body.style.overflow = "hidden";
-      }
+        document.getElementById('infoModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
-      // Close info modal
-      function closeInfoModal() {
-        document.getElementById("infoModal").classList.remove("active");
-        document.body.style.overflow = "";
-      }
+    // Close info modal
+    function closeInfoModal() {
+        document.getElementById('infoModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-      // Shuffle array randomly
-      function shuffleArray(array) {
+    // Format date as m/d/yy
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const month = date.getMonth() + 1; // Months are 0-indexed
+        const day = date.getDate();
+        const year = date.getFullYear().toString().slice(-2); // Last 2 digits of year
+        return `${month}/${day}/${year}`;
+    }
+
+    // Shuffle array randomly
+    function shuffleArray(array) {
         const shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         return shuffled;
-      }
+    }
 
-      // Update URL without reloading page
-      function updateURL(index) {
+    // Update URL without reloading page
+    function updateURL(index) {
         if (index === null) {
-          // Back to index
-          history.pushState({ view: "index" }, "", window.location.pathname);
+            // Back to index
+            history.pushState({view: 'index'}, '', window.location.pathname);
         } else {
-          // Detail view
-          const photoId = photos[index].id;
-          history.pushState(
-            { view: "detail", index: index },
-            "",
-            `?photo=${photoId}`
-          );
+            // Detail view
+            const photoId = photos[index].id;
+            history.pushState({view: 'detail', index: index}, '', `?photo=${photoId}`);
         }
-      }
+    }
 
-      // Handle browser back/forward buttons
-      window.addEventListener("popstate", (event) => {
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', (event) => {
         if (event.state) {
-          if (event.state.view === "index") {
-            if (
-              document.getElementById("photoModal").classList.contains("active")
-            ) {
-              closeModal();
+            if (event.state.view === 'index') {
+                if (document.getElementById('photoModal').classList.contains('active')) {
+                    closeModal();
+                }
+            } else if (event.state.view === 'detail') {
+                openModal(event.state.index, true);
             }
-          } else if (event.state.view === "detail") {
-            openModal(event.state.index, true);
-          }
         }
-      });
+    });
 
-      // Check URL on page load
-      function checkURLOnLoad() {
+    // Check URL on page load
+    function checkURLOnLoad() {
         const urlParams = new URLSearchParams(window.location.search);
-        const photoId = urlParams.get("photo");
-
+        const photoId = urlParams.get('photo');
+        
         if (photoId && photos.length > 0) {
-          const index = photos.findIndex((p) => p.id === photoId);
-          if (index !== -1) {
-            openModal(index, true);
-          }
+            const index = photos.findIndex(p => p.id === photoId);
+            if (index !== -1) {
+                openModal(index, true);
+            }
         }
-      }
+    }
 
-      // Scroll to top function
-      function scrollToTop(event) {
+    // Scroll to top function
+    function scrollToTop(event) {
         event.preventDefault();
         window.scrollTo({
-          top: 0,
-          behavior: "smooth",
+            top: 0,
+            behavior: 'smooth'
         });
-      }
+    }
 
-      // Toggle UI visibility
-      function toggleUI() {
+    // Toggle UI visibility
+    function toggleUI() {
         uiVisible = !uiVisible;
-        const topNav = document.getElementById("topNav");
-        const modalInfo = document.getElementById("modalInfoOverlay");
-        const showBtn = document.getElementById("showUIBtn");
+        const topNav = document.getElementById('topNav');
+        const modalInfo = document.getElementById('modalInfoOverlay');
+        const showBtn = document.getElementById('showUIBtn');
 
         if (uiVisible) {
-          topNav.classList.remove("hide-ui");
-          modalInfo.classList.remove("hide-ui");
-          showBtn.classList.remove("visible");
+            topNav.classList.remove('hide-ui');
+            modalInfo.classList.remove('hide-ui');
+            showBtn.classList.remove('visible');
         } else {
-          topNav.classList.add("hide-ui");
-          modalInfo.classList.add("hide-ui");
-          showBtn.classList.add("visible");
+            topNav.classList.add('hide-ui');
+            modalInfo.classList.add('hide-ui');
+            showBtn.classList.add('visible');
         }
-      }
+    }
 
-      // Show UI (for arrow up key)
-      function showUI() {
+    // Show UI (for arrow up key)
+    function showUI() {
         uiVisible = true;
-        const topNav = document.getElementById("topNav");
-        const modalInfo = document.getElementById("modalInfoOverlay");
-        const showBtn = document.getElementById("showUIBtn");
+        const topNav = document.getElementById('topNav');
+        const modalInfo = document.getElementById('modalInfoOverlay');
+        const showBtn = document.getElementById('showUIBtn');
+        
+        topNav.classList.remove('hide-ui');
+        modalInfo.classList.remove('hide-ui');
+        showBtn.classList.remove('visible');
+    }
 
-        topNav.classList.remove("hide-ui");
-        modalInfo.classList.remove("hide-ui");
-        showBtn.classList.remove("visible");
-      }
-
-      // Hide UI (for arrow down key)
-      function hideUI() {
+    // Hide UI (for arrow down key)
+    function hideUI() {
         uiVisible = false;
-        const topNav = document.getElementById("topNav");
-        const modalInfo = document.getElementById("modalInfoOverlay");
-        const showBtn = document.getElementById("showUIBtn");
+        const topNav = document.getElementById('topNav');
+        const modalInfo = document.getElementById('modalInfoOverlay');
+        const showBtn = document.getElementById('showUIBtn');
+        
+        topNav.classList.add('hide-ui');
+        modalInfo.classList.add('hide-ui');
+        showBtn.classList.add('visible');
+    }
 
-        topNav.classList.add("hide-ui");
-        modalInfo.classList.add("hide-ui");
-        showBtn.classList.add("visible");
-      }
-
-      // Handle configuration form
-      document.getElementById("configForm").addEventListener("submit", (e) => {
+    // Handle configuration form
+    document.getElementById('configForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const apiKey = document.getElementById("apiKey").value.trim();
-        const userId = document.getElementById("userId").value.trim();
-
+        const apiKey = document.getElementById('apiKey').value.trim();
+        const userId = document.getElementById('userId').value.trim();
+        
         if (apiKey && userId) {
-          fetchPhotos(apiKey, userId);
+            fetchPhotos(apiKey, userId);
         }
-      });
+    });
 
-      // Process description to handle line breaks
-      function processDescription(description) {
-        if (!description) return "";
-
+    // Process description to handle line breaks
+    function processDescription(description) {
+        if (!description) return '';
+        
         // Replace common HTML break tags with newlines
-        description = description.replace(/<br\s*\/?>/gi, "\n");
-        description = description.replace(/<\/p>/gi, "\n\n");
-        description = description.replace(/<p>/gi, "");
-
+        description = description.replace(/<br\s*\/?>/gi, '\n');
+        description = description.replace(/<\/p>/gi, '\n\n');
+        description = description.replace(/<p>/gi, '');
+        
         // Remove other HTML tags
-        const temp = document.createElement("div");
+        const temp = document.createElement('div');
         temp.innerHTML = description;
-        description = temp.textContent || temp.innerText || "";
-
+        description = temp.textContent || temp.innerText || '';
+        
         // Normalize multiple newlines
-        description = description.replace(/\n{3,}/g, "\n\n");
-
+        description = description.replace(/\n{3,}/g, '\n\n');
+        
         return description.trim();
-      }
+    }
 
-      // Fetch photos using jQuery AJAX
-      function fetchPhotos(apiKey, userId) {
-        console.log("Starting fetchPhotos...");
-
-        showScreen("loading");
-
+    // Fetch photos using jQuery AJAX
+    function fetchPhotos(apiKey, userId) {
+        console.log('Starting fetchPhotos...');
+        
+        showScreen('loading');
+        
         // Calculate date 2 years ago in Unix timestamp
         const twoYearsAgo = new Date();
         twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
         const minUploadTimestamp = Math.floor(twoYearsAgo.getTime() / 1000);
-
-        console.log("Two years ago timestamp:", minUploadTimestamp);
-        console.log("Two years ago date:", twoYearsAgo.toISOString());
-
+        
+        console.log('Two years ago timestamp:', minUploadTimestamp);
+        console.log('Two years ago date:', twoYearsAgo.toISOString());
+        
         $.ajax({
-          url: "https://api.flickr.com/services/rest/",
-          data: {
-            method: "flickr.people.getPublicPhotos",
-            api_key: apiKey,
-            user_id: userId,
-            extras:
-              "description,date_taken,date_upload,url_o,url_k,url_h,url_l,count_faves,count_comments",
-            format: "json",
-            per_page: 500,
-            min_upload_date: minUploadTimestamp,
-          },
-          dataType: "jsonp",
-          jsonp: "jsoncallback",
-          timeout: 5000,
-          success: function (data) {
-            console.log("SUCCESS! Flickr API Response:", data);
-
-            try {
-              if (data.stat === "fail") {
-                throw new Error(data.message || "Failed to fetch photos");
-              }
-
-              if (
-                !data.photos ||
-                !data.photos.photo ||
-                data.photos.photo.length === 0
-              ) {
-                throw new Error("No photos found for this user");
-              }
-
-              console.log(
-                "Total photos returned by API:",
-                data.photos.photo.length
-              );
-
-              // Map photos and filter by upload date (client-side verification)
-              let allPhotos = data.photos.photo
-                .filter((photo) => {
-                  const uploadTimestamp = parseInt(photo.dateupload);
-                  const isRecent = uploadTimestamp >= minUploadTimestamp;
-                  if (!isRecent) {
-                    console.log(
-                      "Filtered out old photo:",
-                      photo.id,
-                      "Upload date:",
-                      new Date(uploadTimestamp * 1000).toISOString()
-                    );
-                  }
-                  return isRecent;
-                })
-                .map((photo) => ({
-                  id: photo.id,
-                  title: photo.title || "Untitled",
-                  description: processDescription(
-                    photo.description._content || ""
-                  ),
-                  // Use large size for detail view (original if available, else fall back)
-                  urlLarge:
-                    photo.url_o ||
-                    photo.url_k ||
-                    photo.url_h ||
-                    `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
-                  // Use medium size for grid (faster loading)
-                  urlMedium:
-                    photo.url_l ||
-                    photo.url_c ||
-                    `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
-                  thumbnail: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`,
-                  dateTaken: photo.datetaken,
-                  dateUpload: photo.dateupload,
-                  uploadDate: new Date(
-                    parseInt(photo.dateupload) * 1000
-                  ).toISOString(),
-                  owner: photo.owner,
-                  faves: photo.count_faves || 0,
-                  comments: photo.count_comments || 0,
-                  flickrUrl: `https://www.flickr.com/photos/${photo.owner}/${photo.id}/`,
-                }));
-
-              console.log(
-                "Photos from last 2 years (after filtering):",
-                allPhotos.length
-              );
-
-              if (allPhotos.length === 0) {
-                throw new Error("No photos found from the last 2 years");
-              }
-
-              // Shuffle and limit to 30 photos
-              photos = shuffleArray(allPhotos).slice(0, MAX_PHOTOS);
-
-              console.log("Selected random photos:", photos.length);
-              console.log(
-                "Sample photo upload dates:",
-                photos
-                  .slice(0, 3)
-                  .map((p) => ({ id: p.id, upload: p.uploadDate }))
-              );
-
-              // Preload first 4 images
-              preloadFirstImages();
-
-              loadMorePhotos();
-              showScreen("grid");
-              setupInfiniteScroll();
-
-              // Check if URL has a photo parameter
-              checkURLOnLoad();
-            } catch (error) {
-              console.error("Error processing photos:", error);
-              showError(error.message);
+            url: 'https://api.flickr.com/services/rest/',
+            data: {
+                method: 'flickr.people.getPublicPhotos',
+                api_key: apiKey,
+                user_id: userId,
+                extras: 'description,date_taken,date_upload,url_o,url_k,url_h,url_l,count_faves,count_comments',
+                format: 'json',
+                per_page: 500,
+                min_upload_date: minUploadTimestamp
+            },
+            dataType: 'jsonp',
+            jsonp: 'jsoncallback',
+            timeout: 5000,
+            success: function(data) {
+                console.log('SUCCESS! Flickr API Response:', data);
+                
+                try {
+                    if (data.stat === 'fail') {
+                        throw new Error(data.message || 'Failed to fetch photos');
+                    }
+                    
+                    if (!data.photos || !data.photos.photo || data.photos.photo.length === 0) {
+                        throw new Error('No photos found for this user');
+                    }
+                    
+                    console.log('Total photos returned by API:', data.photos.photo.length);
+                    
+                    // Map photos and filter by upload date (client-side verification)
+                    let allPhotos = data.photos.photo
+                        .filter(photo => {
+                            const uploadTimestamp = parseInt(photo.dateupload);
+                            const isRecent = uploadTimestamp >= minUploadTimestamp;
+                            if (!isRecent) {
+                                console.log('Filtered out old photo:', photo.id, 
+                                    'Upload date:', new Date(uploadTimestamp * 1000).toISOString());
+                            }
+                            return isRecent;
+                        })
+                        .map(photo => ({
+                            id: photo.id,
+                            title: photo.title || 'Untitled',
+                            description: processDescription(photo.description._content || ''),
+                            // Use large size for detail view (original if available, else fall back)
+                            urlLarge: photo.url_o || photo.url_k || photo.url_h || 
+                                 `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+                            // Use medium size for grid (faster loading)
+                            urlMedium: photo.url_l || photo.url_c || 
+                                 `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_z.jpg`,
+                            thumbnail: `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_w.jpg`,
+                            dateTaken: photo.datetaken,
+                            dateUpload: photo.dateupload,
+                            uploadDate: new Date(parseInt(photo.dateupload) * 1000).toISOString(),
+                            owner: photo.owner,
+                            faves: photo.count_faves || 0,
+                            comments: photo.count_comments || 0,
+                            flickrUrl: `https://www.flickr.com/photos/${photo.owner}/${photo.id}/`
+                        }));
+                    
+                    console.log('Photos from last 2 years (after filtering):', allPhotos.length);
+                    
+                    if (allPhotos.length === 0) {
+                        throw new Error('No photos found from the last 2 years');
+                    }
+                    
+                    // Shuffle and limit to 30 photos
+                    photos = shuffleArray(allPhotos).slice(0, MAX_PHOTOS);
+                    
+                    console.log('Selected random photos:', photos.length);
+                    console.log('Sample photo upload dates:', 
+                        photos.slice(0, 3).map(p => ({ id: p.id, upload: p.uploadDate })));
+                    
+                    // Preload first 4 images
+                    preloadFirstImages();
+                    
+                    loadMorePhotos();
+                    showScreen('grid');
+                    setupInfiniteScroll();
+                    
+                    // Check if URL has a photo parameter
+                    checkURLOnLoad();
+                } catch (error) {
+                    console.error('Error processing photos:', error);
+                    showError(error.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX ERROR!');
+                showError('Failed to load photos. Error: ' + status);
             }
-          },
-          error: function (xhr, status, error) {
-            console.error("AJAX ERROR!");
-            showError("Failed to load photos. Error: " + status);
-          },
         });
-      }
+    }
 
-      // Preload first 4 images
-      function preloadFirstImages() {
+    // Preload first 4 images
+    function preloadFirstImages() {
         const imagesToPreload = Math.min(4, photos.length);
         const head = document.head;
-
+        
         for (let i = 0; i < imagesToPreload; i++) {
-          const link = document.createElement("link");
-          link.rel = "preload";
-          link.as = "image";
-          link.href = photos[i].urlMedium;
-          head.appendChild(link);
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = photos[i].urlMedium;
+            head.appendChild(link);
         }
+        
+        console.log('Preloading first', imagesToPreload, 'images');
+    }
 
-        console.log("Preloading first", imagesToPreload, "images");
-      }
-
-      // Load more photos into the grid
-      function loadMorePhotos() {
-        const grid = document.getElementById("photoGrid");
+    // Load more photos into the grid
+    function loadMorePhotos() {
+        const grid = document.getElementById('photoGrid');
         const batchSize = isFirstBatch ? INITIAL_BATCH_SIZE : BATCH_SIZE;
         const endIndex = Math.min(loadedPhotosCount + batchSize, photos.length);
-
+        
         let loadedImagesCount = 0;
         const totalImagesToLoad = endIndex - loadedPhotosCount;
-
+        
         for (let i = loadedPhotosCount; i < endIndex; i++) {
-          const photo = photos[i];
-          const item = document.createElement("div");
-          item.className = "photo-item";
-          item.id = "photo-" + i;
-          item.onclick = () => openModal(i);
-
-          const img = document.createElement("img");
-          img.src = photo.urlMedium; // Use medium size for grid
-          img.alt = photo.title;
-
-          // Prioritize first 4 images (eager loading), lazy load the rest
-          if (i < 4) {
-            img.loading = "eager";
-          } else {
-            img.loading = "lazy";
-          }
-
-          // Track image loading for first batch
-          if (loadedPhotosCount === 0 && i < 4) {
-            img.onload = () => {
-              loadedImagesCount++;
-              if (loadedImagesCount >= Math.min(4, photos.length)) {
-                // Hide grid loading spinner when first 4 images are loaded
-                const gridLoading = document.getElementById("gridLoading");
-                if (gridLoading) {
-                  gridLoading.style.opacity = "0";
-                  setTimeout(() => {
-                    gridLoading.style.display = "none";
-                  }, 300);
-                }
-              }
-            };
-          }
-
-          item.appendChild(img);
-          grid.appendChild(item);
+            const photo = photos[i];
+            const item = document.createElement('div');
+            item.className = 'photo-item';
+            item.id = 'photo-' + i;
+            item.onclick = () => openModal(i);
+            
+            const img = document.createElement('img');
+            img.src = photo.urlMedium; // Use medium size for grid
+            img.alt = photo.title;
+            
+            // Prioritize first 4 images (eager loading), lazy load the rest
+            if (i < 4) {
+                img.loading = 'eager';
+            } else {
+                img.loading = 'lazy';
+            }
+            
+            // Track image loading for first batch
+            if (loadedPhotosCount === 0 && i < 4) {
+                img.onload = () => {
+                    loadedImagesCount++;
+                    if (loadedImagesCount >= Math.min(4, photos.length)) {
+                        // Hide grid loading spinner when first 4 images are loaded
+                        const gridLoading = document.getElementById('gridLoading');
+                        if (gridLoading) {
+                            gridLoading.style.opacity = '0';
+                            setTimeout(() => {
+                                gridLoading.style.display = 'none';
+                            }, 300);
+                        }
+                    }
+                };
+            }
+            
+            item.appendChild(img);
+            grid.appendChild(item);
         }
-
+        
         loadedPhotosCount = endIndex;
-
+        
         // After first batch, switch to regular batch size
         if (isFirstBatch) {
-          isFirstBatch = false;
+            isFirstBatch = false;
         }
+        
+        console.log('Loaded photos:', loadedPhotosCount, 'of', photos.length);
+    }
 
-        console.log("Loaded photos:", loadedPhotosCount, "of", photos.length);
-      }
-
-      // Setup infinite scroll
-      function setupInfiniteScroll() {
-        window.addEventListener("scroll", () => {
-          // Handle scroll-to-top arrow visibility
-          const scrollArrow = document.getElementById("scrollToTop");
-          const isModalOpen = document
-            .getElementById("photoModal")
-            .classList.contains("active");
-
-          if (!isModalOpen && window.scrollY > 100) {
-            scrollArrow.classList.add("visible");
-          } else if (!isModalOpen) {
-            scrollArrow.classList.remove("visible");
-          }
-
-          // Handle infinite scroll loading
-          if (loadedPhotosCount >= photos.length) return;
-
-          const scrollPosition = window.innerHeight + window.scrollY;
-          const pageHeight = document.documentElement.scrollHeight;
-
-          if (scrollPosition >= pageHeight - 1000) {
-            loadMorePhotos();
-          }
+    // Setup infinite scroll
+    function setupInfiniteScroll() {
+        window.addEventListener('scroll', () => {
+            // Handle scroll-to-top arrow visibility
+            const scrollArrow = document.getElementById('scrollToTop');
+            const isModalOpen = document.getElementById('photoModal').classList.contains('active');
+            
+            if (!isModalOpen && window.scrollY > 100) {
+                scrollArrow.classList.add('visible');
+            } else if (!isModalOpen) {
+                scrollArrow.classList.remove('visible');
+            }
+            
+            // Handle infinite scroll loading
+            if (loadedPhotosCount >= photos.length) return;
+            
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const pageHeight = document.documentElement.scrollHeight;
+            
+            if (scrollPosition >= pageHeight - 1000) {
+                loadMorePhotos();
+            }
         });
-      }
+    }
 
-      // Scroll to specific photo in grid
-      function scrollToPhoto(index) {
-        const photoElement = document.getElementById("photo-" + index);
+    // Scroll to specific photo in grid
+    function scrollToPhoto(index) {
+        const photoElement = document.getElementById('photo-' + index);
         if (photoElement) {
-          photoElement.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
+            photoElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
         }
-      }
+    }
 
-      // Open photo modal with fade-in
-      function openModal(index, fromURL = false) {
+    // Open photo modal with fade-in
+    function openModal(index, fromURL = false) {
         const photo = photos[index];
-        const modal = document.getElementById("photoModal");
-        const grid = document.getElementById("photoGrid");
-        const scrollArrow = document.getElementById("scrollToTop");
-        const backArrow = document.getElementById("backArrow");
-        const topNav = document.getElementById("topNav");
-        const modalImage = document.getElementById("modalImage");
-        const modalImageLoading = document.getElementById("modalImageLoading");
-
+        const modal = document.getElementById('photoModal');
+        const grid = document.getElementById('photoGrid');
+        const scrollArrow = document.getElementById('scrollToTop');
+        const backArrow = document.getElementById('backArrow');
+        const topNav = document.getElementById('topNav');
+        const modalImage = document.getElementById('modalImage');
+        const modalImageLoading = document.getElementById('modalImageLoading');
+        
         // Show loading spinner
-        modalImageLoading.style.display = "block";
-        modalImageLoading.style.opacity = "1";
-
+        modalImageLoading.style.display = 'block';
+        modalImageLoading.style.opacity = '1';
+        
         // Clear previous image
-        modalImage.src = "";
-        modalImage.style.opacity = "0";
-
+        modalImage.src = '';
+        modalImage.style.opacity = '0';
+        
         // Show back arrow, hide scroll arrow
-        scrollArrow.classList.add("hidden");
-        backArrow.classList.remove("hidden");
-
+        scrollArrow.classList.add('hidden');
+        backArrow.classList.remove('hidden');
+        
         // Add detail view class for title animation
-        topNav.classList.add("detail-view");
-
+        topNav.classList.add('detail-view');
+        
         // Maintain UI state - don't reset it
-        const modalInfo = document.getElementById("modalInfoOverlay");
-        const showBtn = document.getElementById("showUIBtn");
-
+        const modalInfo = document.getElementById('modalInfoOverlay');
+        const showBtn = document.getElementById('showUIBtn');
+        
         if (uiVisible) {
-          topNav.classList.remove("hide-ui");
-          modalInfo.classList.remove("hide-ui");
-          showBtn.classList.remove("visible");
+            topNav.classList.remove('hide-ui');
+            modalInfo.classList.remove('hide-ui');
+            showBtn.classList.remove('visible');
         } else {
-          topNav.classList.add("hide-ui");
-          modalInfo.classList.add("hide-ui");
-          showBtn.classList.add("visible");
+            topNav.classList.add('hide-ui');
+            modalInfo.classList.add('hide-ui');
+            showBtn.classList.add('visible');
         }
-
+        
         currentPhotoIndex = index;
         modal.dataset.currentIndex = index;
-
+        
         // Load large image
         const img = new Image();
-        img.onload = function () {
-          modalImage.src = photo.urlLarge;
-          modalImage.style.opacity = "1";
-          // Hide loading spinner
-          modalImageLoading.style.opacity = "0";
-          setTimeout(() => {
-            modalImageLoading.style.display = "none";
-          }, 300);
+        img.onload = function() {
+            modalImage.src = photo.urlLarge;
+            modalImage.style.opacity = '1';
+            // Hide loading spinner
+            modalImageLoading.style.opacity = '0';
+            setTimeout(() => {
+                modalImageLoading.style.display = 'none';
+            }, 300);
         };
         img.src = photo.urlLarge;
-
-        document.getElementById("modalTitle").textContent = photo.title;
-        document.getElementById("modalDescription").textContent =
-          photo.description;
-
+        
+        document.getElementById('modalTitle').textContent = photo.title;
+        document.getElementById('modalDescription').textContent = photo.description;
+        
         // Build meta information
         const metaParts = [];
+        
+        // Add formatted date
+        metaParts.push(formatDate(photo.dateTaken));
+        
         if (photo.faves > 0) {
-          metaParts.push(
-            `${photo.faves} favorite${photo.faves !== 1 ? "s" : ""}`
-          );
+            metaParts.push(`${photo.faves} favorite${photo.faves !== 1 ? 's' : ''}`);
         }
         if (photo.comments > 0) {
-          metaParts.push(
-            `${photo.comments} comment${photo.comments !== 1 ? "s" : ""}`
-          );
+            metaParts.push(`${photo.comments} comment${photo.comments !== 1 ? 's' : ''}`);
         }
-
-        document.getElementById("modalMeta").textContent =
-          metaParts.length > 0 ? metaParts.join(" • ") : "";
-        document.getElementById("modalLink").href = photo.flickrUrl;
-
+        
+        document.getElementById('modalMeta').textContent = metaParts.length > 0 ? metaParts.join(' • ') : '';
+        document.getElementById('modalLink').href = photo.flickrUrl;
+        
         // Update navigation visibility
         updateNavigation();
-
+        
         // Update URL
         if (!fromURL) {
-          updateURL(index);
+            updateURL(index);
         }
-
+        
         // Hide grid and show modal
-        grid.classList.add("hide-for-modal");
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-
+        grid.classList.add('hide-for-modal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
         // Trigger fade-in after a small delay
         setTimeout(() => {
-          modal.classList.add("fade-in");
+            modal.classList.add('fade-in');
         }, 10);
-      }
+    }
 
-      // Update navigation based on current position
-      function updateNavigation() {
+    // Update navigation based on current position
+    function updateNavigation() {
         const isFirst = currentPhotoIndex === 0;
         const isLast = currentPhotoIndex === photos.length - 1;
+        
+        document.getElementById('navLeft').style.display = isFirst ? 'none' : 'flex';
+        document.getElementById('navRight').style.display = isLast ? 'none' : 'flex';
+        document.getElementById('startAgainBox').classList.toggle('hidden', !isLast);
+    }
 
-        document.getElementById("navLeft").style.display = isFirst
-          ? "none"
-          : "flex";
-        document.getElementById("navRight").style.display = isLast
-          ? "none"
-          : "flex";
-        document
-          .getElementById("startAgainBox")
-          .classList.toggle("hidden", !isLast);
-      }
-
-      // Close photo modal
-      function closeModal(event) {
+    // Close photo modal
+    function closeModal(event) {
         if (event) event.preventDefault();
-
-        const modal = document.getElementById("photoModal");
-        const grid = document.getElementById("photoGrid");
-        const scrollArrow = document.getElementById("scrollToTop");
-        const backArrow = document.getElementById("backArrow");
-        const topNav = document.getElementById("topNav");
-
-        modal.classList.remove("fade-in");
-
+        
+        const modal = document.getElementById('photoModal');
+        const grid = document.getElementById('photoGrid');
+        const scrollArrow = document.getElementById('scrollToTop');
+        const backArrow = document.getElementById('backArrow');
+        const topNav = document.getElementById('topNav');
+        
+        modal.classList.remove('fade-in');
+        
         // Update URL
         updateURL(null);
-
+        
         setTimeout(() => {
-          modal.classList.remove("active");
-          grid.classList.remove("hide-for-modal");
-
-          // Show scroll arrow, hide back arrow
-          backArrow.classList.add("hidden");
-          scrollArrow.classList.remove("hidden");
-
-          // Check scroll position to set arrow visibility
-          if (window.scrollY > 100) {
-            scrollArrow.classList.add("visible");
-          } else {
-            scrollArrow.classList.remove("visible");
-          }
-
-          // Remove detail view class for title animation
-          topNav.classList.remove("detail-view");
-
-          // Always show nav bar on index
-          uiVisible = true;
-          topNav.classList.remove("hide-ui");
-
-          document.body.style.overflow = "";
-          scrollToPhoto(currentPhotoIndex);
+            modal.classList.remove('active');
+            grid.classList.remove('hide-for-modal');
+            
+            // Show scroll arrow, hide back arrow
+            backArrow.classList.add('hidden');
+            scrollArrow.classList.remove('hidden');
+            
+            // Check scroll position to set arrow visibility
+            if (window.scrollY > 100) {
+                scrollArrow.classList.add('visible');
+            } else {
+                scrollArrow.classList.remove('visible');
+            }
+            
+            // Remove detail view class for title animation
+            topNav.classList.remove('detail-view');
+            
+            // Always show nav bar on index
+            uiVisible = true;
+            topNav.classList.remove('hide-ui');
+            
+            document.body.style.overflow = '';
+            scrollToPhoto(currentPhotoIndex);
         }, 100);
-      }
+    }
 
-      // Navigate to next photo
-      function nextPhoto() {
+    // Navigate to next photo
+    function nextPhoto() {
         if (currentPhotoIndex < photos.length - 1) {
-          const modal = document.getElementById("photoModal");
-          modal.classList.remove("fade-in");
-
-          setTimeout(() => {
-            openModal(currentPhotoIndex + 1);
-          }, 100);
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('fade-in');
+            
+            setTimeout(() => {
+                openModal(currentPhotoIndex + 1);
+            }, 100);
         }
-      }
+    }
 
-      // Navigate to previous photo
-      function prevPhoto() {
+    // Navigate to previous photo
+    function prevPhoto() {
         if (currentPhotoIndex > 0) {
-          const modal = document.getElementById("photoModal");
-          modal.classList.remove("fade-in");
-
-          setTimeout(() => {
-            openModal(currentPhotoIndex - 1);
-          }, 100);
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('fade-in');
+            
+            setTimeout(() => {
+                openModal(currentPhotoIndex - 1);
+            }, 100);
         }
-      }
+    }
 
-      // Start again from the beginning
-      function startAgain() {
-        const modal = document.getElementById("photoModal");
-        modal.classList.remove("fade-in");
-
+    // Start again from the beginning
+    function startAgain() {
+        const modal = document.getElementById('photoModal');
+        modal.classList.remove('fade-in');
+        
         setTimeout(() => {
-          openModal(0);
+            openModal(0);
         }, 100);
-      }
+    }
 
-      // Keyboard navigation
-      document.addEventListener("keydown", (e) => {
-        const modal = document.getElementById("photoModal");
-        const isModalOpen = modal.classList.contains("active");
-        const infoModal = document.getElementById("infoModal");
-        const isInfoModalOpen = infoModal.classList.contains("active");
-
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('photoModal');
+        const isModalOpen = modal.classList.contains('active');
+        const infoModal = document.getElementById('infoModal');
+        const isInfoModalOpen = infoModal.classList.contains('active');
+        
         // Handle info modal ESC key
-        if (isInfoModalOpen && e.key === "Escape") {
-          closeInfoModal();
-          return;
+        if (isInfoModalOpen && e.key === 'Escape') {
+            closeInfoModal();
+            return;
         }
-
+        
         if (!isModalOpen) return;
-
-        if (e.key === "Escape" || e.key === "x" || e.key === "X") {
-          closeModal();
-        } else if (e.key === "ArrowRight") {
-          e.preventDefault();
-          nextPhoto();
-        } else if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          prevPhoto();
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          showUI();
-        } else if (e.key === "ArrowDown") {
-          e.preventDefault();
-          hideUI();
+        
+        if (e.key === 'Escape' || e.key === 'x' || e.key === 'X') {
+            closeModal();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextPhoto();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevPhoto();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            showUI();
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            hideUI();
         }
-      });
+    });
 
-      // Show/hide screens
-      function showScreen(screen) {
-        document.getElementById("configScreen").classList.add("hidden");
-        document.getElementById("loadingScreen").classList.add("hidden");
-        document.getElementById("errorScreen").classList.add("hidden");
-        document.getElementById("photoGrid").classList.add("hidden");
-
-        if (screen === "loading") {
-          document.getElementById("loadingScreen").classList.remove("hidden");
-        } else if (screen === "error") {
-          document.getElementById("errorScreen").classList.remove("hidden");
-        } else if (screen === "grid") {
-          document.getElementById("photoGrid").classList.remove("hidden");
+    // Show/hide screens
+    function showScreen(screen) {
+        document.getElementById('configScreen').classList.add('hidden');
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('errorScreen').classList.add('hidden');
+        document.getElementById('photoGrid').classList.add('hidden');
+        
+        if (screen === 'loading') {
+            document.getElementById('loadingScreen').classList.remove('hidden');
+        } else if (screen === 'error') {
+            document.getElementById('errorScreen').classList.remove('hidden');
+        } else if (screen === 'grid') {
+            document.getElementById('photoGrid').classList.remove('hidden');
         }
-      }
+    }
 
-      // Show error
-      function showError(message) {
-        document.getElementById("errorMessage").textContent = message;
-        showScreen("error");
-      }
-    </script>
-  </body>
+    // Show error
+    function showError(message) {
+        document.getElementById('errorMessage').textContent = message;
+        showScreen('error');
+    }
+
+</script>
+```
+
+</body>
 </html>
