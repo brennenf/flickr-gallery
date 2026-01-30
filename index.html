@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flickr Photo Viewer</title>
+    <title>problem solved by brennenf</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -1166,10 +1166,10 @@
                 uploadDate: new Date(
                   parseInt(photo.dateupload) * 1000
                 ).toISOString(),
-                owner: photo.owner,
+                owner: userId,
                 faves: photo.count_faves || 0,
                 comments: photo.count_comments || 0,
-                flickrUrl: `https://www.flickr.com/photos/${photo.owner}/${photo.id}/`,
+                flickrUrl: `https://www.flickr.com/photos/${userId}/${photo.id}/`,
               }));
 
               console.log("Photos from album:", allPhotos.length);
