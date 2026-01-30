@@ -3,7 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
     <title>Flickr Photo Viewer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +27,20 @@
         background: #000;
         color: #fff;
         overflow-x: hidden;
+        /* Support for safe area insets (notches, etc) */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    /* Fullscreen mode for mobile */
+    @media (max-width: 950px) {
+        body {
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+        
+        html {
+            height: -webkit-fill-available;
+        }
     }
 
     /* Glass Box Style */
@@ -661,7 +679,7 @@
     .hidden {
         display: none !important;
     }
-</style>
+    </style>
 
 </head>
 <body>
@@ -682,6 +700,7 @@
             </svg>
         </a>
     </div>
+
 <!-- Info Modal -->
 <div id="infoModal" class="info-modal">
     <div class="info-modal-content glass-box">
@@ -899,6 +918,37 @@
     function closeInfoModal() {
         document.getElementById('infoModal').classList.remove('active');
         document.body.style.overflow = '';
+    }
+
+    // Request fullscreen mode (mobile)
+    function requestFullscreen() {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen().catch(err => {
+                console.log('Fullscreen request failed:', err);
+            });
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    }
+
+    // Exit fullscreen mode
+    function exitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen().catch(err => {
+                console.log('Exit fullscreen failed:', err);
+            });
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
     }
 
     // Format date as m/d/yy
@@ -1268,6 +1318,11 @@
         const modalImage = document.getElementById('modalImage');
         const modalImageLoading = document.getElementById('modalImageLoading');
         
+        // Request fullscreen on mobile
+        if (window.innerWidth <= 950) {
+            requestFullscreen();
+        }
+        
         // Show loading spinner
         modalImageLoading.style.display = 'block';
         modalImageLoading.style.opacity = '1';
@@ -1370,6 +1425,11 @@
         const scrollArrow = document.getElementById('scrollToTop');
         const backArrow = document.getElementById('backArrow');
         const topNav = document.getElementById('topNav');
+        
+        // Exit fullscreen on mobile
+        if (window.innerWidth <= 950 && (document.fullscreenElement || document.webkitFullscreenElement)) {
+            exitFullscreen();
+        }
         
         modal.classList.remove('fade-in');
         
